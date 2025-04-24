@@ -45,3 +45,5 @@ jobs:
         
 
 This above code means there is only one job named test. Then defining a few rules like you're running it on ubuntu. Then some steps are mentioned which need to be executed. The "uses" syntax can't change. The "name" can be different. 
+
+
