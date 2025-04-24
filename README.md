@@ -1,16 +1,58 @@
-# mlops-continuous-integration-tutorial
+# MLOps: Continuous Integration (CI) Tutorial
 
-- you may want to change any existing method say in the ML app which has been added to a repo. You may want to make your code more efficient. You may want to add or remove say a method. 
-- while implementing the changes there may be certain risks which you may want to mitigate. For example say your coding standard is poor. You might have added some buggy code. You might have integration issues. 
-- to handle these issues there should be a server which is providing you some sort of service to check all the tests. So then the server would have to be loaded with a OS which was used during dev, the python and its dependencies, it will pull the code, it will perform the tests and generate a report. All these things that is setting up the server and all the tasks in itself is a full time job for an individual. So there is an automated service to handle all of this. This is known as continuous integration(CI).
-- This automated service on GitHub is GitHub Actions 
-    - you will have to write down the tasks and the checks by creating a YAML file.
-    - There are other services like Jenkins and Travis CI too. There are other GitHub sort of services like GitLab and Bitbucket which have their own CI services too. 
+This tutorial demonstrates how to set up Continuous Integration (CI) for a Machine Learning application using **GitHub Actions**.
 
+---
 
+## Why Continuous Integration?
 
-CI YAML FILE:
+As your ML application grows, you may:
 
+- Modify existing methods to improve efficiency  
+- Add or remove functions as part of development  
+- Refactor code for better readability or structure  
+
+However, these changes bring **risks** such as:
+
+- Poor coding standards  
+- Introducing bugs  
+- Breaking integration with other parts of the system  
+
+To **mitigate these risks**, it's important to **automate testing and integration** every time a change is made. This is where **Continuous Integration (CI)** comes in.
+
+---
+
+## What Does CI Do?
+
+A CI system handles tasks like:
+
+- Pulling the latest version of your code  
+- Setting up a virtual server environment (OS, Python version, dependencies)  
+- Running tests (e.g., with `pytest`)  
+- Generating a test report  
+
+Setting this up manually is a time-consuming and error-prone process. Luckily, we have automated CI services to do this for us.
+
+---
+
+## CI with GitHub Actions
+
+**GitHub Actions** is GitHub’s native CI/CD platform. Other popular CI tools include:
+
+- **Jenkins**
+- **Travis CI**
+- **GitLab CI/CD**
+- **Bitbucket Pipelines**
+
+With GitHub Actions, you define your CI pipeline using a `.yaml` file.
+
+---
+
+## Sample GitHub Actions YAML File
+
+Here’s an example CI configuration in a file called `.github/workflows/ci.yaml`:
+
+```yaml
 on: 
   push: 
     branches:
@@ -18,8 +60,6 @@ on:
   pull_request:
     branches:
       - main
-
-The above code means that execute the flow only when the code is pushing or pulling on the branch main. 
 
 jobs:
   test:
@@ -42,8 +82,22 @@ jobs:
     - name: Run tests
       run: |
         pytest _test.py
-        
+```
 
-This above code means there is only one job named test. Then defining a few rules like you're running it on ubuntu. Then some steps are mentioned which need to be executed. The "uses" syntax can't change. The "name" can be different. 
+---
 
+### Explanation:
+
+- `on`: Specifies the trigger for the workflow. Here, the CI pipeline runs on push or pull requests to the `main` branch.
+- `jobs`: Defines the sequence of tasks. This example has a single job named `test`.
+- `runs-on`: Specifies the OS used in the virtual environment (e.g., `ubuntu-latest`).
+- `steps`: A list of actions:
+  - **Checkout code**: Clones your repo into the runner
+  - **Set up Python**: Defines the Python version
+  - **Install dependencies**: Installs required packages
+  - **Run tests**: Executes test files using `pytest`
+
+Note:  
+- The `uses:` keyword references GitHub-provided actions.  
+- You can customize the `name:` field to describe each step.
 
