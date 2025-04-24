@@ -6,3 +6,42 @@
 - This automated service on GitHub is GitHub Actions 
     - you will have to write down the tasks and the checks by creating a YAML file.
     - There are other services like Jenkins and Travis CI too. There are other GitHub sort of services like GitLab and Bitbucket which have their own CI services too. 
+
+
+
+CI YAML FILE:
+
+on: 
+  push: 
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+The above code means that execute the flow only when the code is pushing or pulling on the branch main. 
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: "3.9"
+      
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest streamlit
+    
+    - name: Run tests
+      run: |
+        pytest _test.py
+        
+
+This above code means there is only one job named test. Then defining a few rules like you're running it on ubuntu. Then some steps are mentioned which need to be executed. The "uses" syntax can't change. The "name" can be different. 
